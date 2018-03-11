@@ -15,6 +15,21 @@ HULK=['CHARGE', 'EXPLOSIVESHIELD', 'BASH']
 VALKYRIE=['SPEARFLIP', 'JUMP', 'POWERUP']
 IRONMAN=['BLINK', 'FIREBALL', 'BURNING']
 DOCTOR_STRANGE=['AOEHEAL', 'SHIELD', 'PULL']
+def COUNTER():return 40
+def WIRE():return 50
+def STEALTH():return 30
+def CHARGE():return 20
+def EXPLOSIVESHIELD():return 30
+def BASH():return 40
+def SPEARFLIP():return 20
+def JUMP():return 35
+def POWERUP():return 50
+def BLINK():return 16
+def FIREBALL():return 60
+def BURNING():return 50
+def AOEHEAL():return 30
+def SHIELD():return 20
+def PULL():return 40
 
 def distance(a, b): return int(math.sqrt((abs(a.x-b.x)**2+abs(a.y-b.y)**2)))
 
@@ -59,6 +74,10 @@ class Entity():
         
     def accessible_items(self):
 	    return tuple(i for i in ITEMS if i.cost<=player.gold)
+
+    def skills(self):
+        return tuple((eval(self.heroType.upper())[i] for i,j in enumerate([self.count1, self.count2, self.count3]) if j==0 and eval(eval(self.heroType.upper())[i])()<self.mana))
+
 		
 		
 class Item():
