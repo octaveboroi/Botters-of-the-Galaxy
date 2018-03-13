@@ -65,15 +65,17 @@ class Entity():
         self.heroType=heroType
         self.visible=int(visible)
         self.items=int(items)
-        self.possessed_items=[]        
-        
+        self.possessed_items=[]
+	self.gold_player=0
+	
+	
     def show(self):
         return tuple((self.id, self.team, self.type, self.x, self.y, self.attackRange, self.health, self.maxHealth,
                      self.shield, self.attackDamage, self.speed, self.stunDuration, self.gold, self.count1, self.count2,
                      self.count3, self.mana, self.maxMana, self.regene, self.heroType, self.visible, self.items, len(self.objets), self.Objets()))
         
     def accessible_items(self):
-	    return tuple(i for i in ITEMS if i.cost<=player.gold)
+	    return tuple(i for i in ITEMS if i.cost<=gold_player)
 
     def skills(self):
         return tuple((eval(self.heroType.upper())[i] for i,j in enumerate([self.count1, self.count2, self.count3]) if j==0 and eval(eval(self.heroType.upper())[i])()<self.mana))
@@ -129,6 +131,10 @@ while True:
     round_type = int(input())  # a positive value will show the number of heroes that await a command
     for i in range(int(input())):
         entities.append(Entity(*input().split()))
+    for e in entities:
+	if e.type=='HERO':
+		if e.team==US.team: e.gold_player=US.gold
+		else: e.gold_player=THEM.gold
     if not QG_friend:
         QG_unfriend=[i for i in entities if i.team==THEM.team and i.type=='TOWER'].pop()
         QG_friend=[i for i in entities if i.team==US.team and i.type=='TOWER'].pop()
